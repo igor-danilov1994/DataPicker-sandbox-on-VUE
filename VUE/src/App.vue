@@ -250,13 +250,11 @@ export default {
   name: 'app',
   data() {
     return {
-
       type: {
         texInput: true,
         component: false,
         embeddedInline: false,
         range: false,
-
       },
       showCalendar: false,
       checked: true,

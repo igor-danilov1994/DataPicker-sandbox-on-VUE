@@ -63,20 +63,20 @@ export default {
     }
   },
   methods: {
-    calendar: function () {
-      let days = [];
-      let week = 0;
+    calendar () {
+      var days = [];
+      var week = 0;
       days[week] = [];
-      let dayLast = new Date(this.year, this.month + 1, 0).getDate();
+      var dayLast = new Date(this.year, this.month + 1, 0).getDate();
       for (let i = 1; i <= dayLast; i++) {
-        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth != this.dFirstMonth) {
+        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
           let a = { index: i };
           days[week].push(a);
           if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) { a.current = '#747ae6' }
           if (new Date(this.year, this.month, i).getDay() === 6 || new Date(this.year, this.month, i).getDay() === 0) { a.weekend = '#ff0000' }
         }
         else {
-          week++
+          week++;
 
           days[week] = [];
           let a = { index: i };
@@ -88,12 +88,11 @@ export default {
 
       if (days[0].length > 0) {
         for (let i = days[0].length; i < 7; i++) {
-          days[0].unshift('');
+          days[0].unshift('')
 
         }
       }
       this.dayChange
-
       return days
     },
     increase() {
