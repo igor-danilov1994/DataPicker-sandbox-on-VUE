@@ -69,7 +69,7 @@ export default {
       days[week] = [];
       let dayLast = new Date(this.year, this.month + 1, 0).getDate();
       for (let i = 1; i <= dayLast; i++) {
-        if (dayLast != this.dFirstMonth) {
+        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth != this.dFirstMonth) {
           let a = { index: i };
           days[week].push(a);
           if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) { a.current = '#747ae6' }
