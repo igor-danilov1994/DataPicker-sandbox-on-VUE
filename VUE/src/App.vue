@@ -1,27 +1,26 @@
 <template>
-  <div class="container">
-    <form class="datepicker_form" action="#">
+  <div ref="datepicker" id="datepicker" class="container datepicker">
+    <form class="datepicker_form" action="#"  @click="closeCalendar">
       <div class="type">
         <span>Type:</span>
         <ul>
           <li>
-            <input :checked="type.texIinput" id="text_input" type="radio"
-                   v-on:click="type.component = false, type.texIinput = true">
-            <label for="text_input">Text input</label>
+            <input v-on:click="isChecked" :checked="type.textInput"
+                    id="textInput" type="radio">
+            <label for="textInput">Text input</label>
           </li>
           <li>
-            <input id="component" type="radio" :checked="type.component"
-                   v-on:click="!type.texIinput" >
+            <input id="component" type="radio" :checked="type.component" v-on:click="isChecked">
             <label for="component">Component</label>
           </li>
           <li>
-            <input id="embedded inline" type="radio" :checked="type.embeddedInline"
-                   v-on:click="type.component = false">
-            <label for="embedded inline">Embedded / inline</label>
+            <input id="embeddedInline" type="radio" :checked="type.embeddedInline"
+                   v-on:click="isChecked">
+            <label for="embeddedInline">Embedded / inline</label>
           </li>
           <li>
             <input id="range" type="radio" :checked="type.range"
-                   v-on:click="type.embeddedInline = false">
+                   v-on:click="isChecked">
             <label for="range">Range</label>
           </li>
         </ul>
@@ -33,19 +32,22 @@
         <ul>
           <li>
             <label for="format">Format</label>
-            <input v-on:input="optionsChangeValue" type="text" id="format" placeholder="mm/dd/yyyy">
+            <input type="text" v-model="options.format" id="format"
+           placeholder="mm/dd/yyyy">
+
           </li>
           <li>
-            <label for="week start">Week start</label>
-            <input id="week start" type="text" placeholder="0" v-on:input=" optionsChangeValue">
+            <label for="weekStart">Week start</label>
+            <input id="weekStart" type="text" placeholder="0"
+                   v-model="options.weekStart">
           </li>
           <li>
-            <label for="start date">Start date</label>
-            <input id="start date" type="text" placeholder="-Infinity" v-on:input=" optionsChangeValue">
+            <label for="startDate">Start date</label>
+            <input id="startDate" type="text" placeholder="-Infinity" v-model="options.startDate">
           </li>
           <li>
-            <label for="end date">End date</label>
-            <input id="end date" type="text" placeholder="+Infinity" v-on:input=" optionsChangeValue">
+            <label for="endDate">End date</label>
+            <input id="endDate" type="text" placeholder="+Infinity" v-model="options.endDate">
           </li>
           <li>
             <label for="start">Start view</label>
@@ -56,59 +58,59 @@
             </select>
           </li>
           <li>
-            <label for="min mode">Min view mode</label>
-            <select id="min mode" v-on:input="optionsChangeValue">
+            <label for="minMode">Min view mode</label>
+            <select id="minMode" v-on:input="optionsChangeValue">
               <option :key="option" v-for="option in  options.minMode">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
-            <label for="max mode">Max view mode</label>
-            <select id="max mode" v-on:input="optionsChangeValue">
+            <label for="maxMode">Max view mode</label>
+            <select id="maxMode" v-on:input="optionsChangeValue">
               <option :key="option" v-for="option in  options.maxMode">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
-            <label for="today button">Today button</label>
-            <select id="today button" v-on:input="optionsChangeValue">
+            <label for="todayButton">Today button</label>
+            <select id="todayButton" v-on:input="optionsChangeValue">
               <option :key="option" v-for="option in  options.todayButton">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
-            <label for="clear button">Clear button</label>
-            <select id="clear button" v-on:input="optionsChangeValue">
+            <label for="clearButton">Clear button</label>
+            <select id="clearButton" v-on:input="optionsChangeValue">
               <option value="false">disabled</option>
               <option value="true">enabled</option>
             </select>
           </li>
           <li>
             <label for="language">Language</label>
-            <select id="language"  v-on:input="optionsChangeValue">
-              <option :key="option"  v-for="option in options.language">
+            <select id="language" v-on:input="optionsChangeValue">
+              <option :key="option" v-for="option in options.language">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
             <label for="orientation">Orientation</label>
-            <select id="orientation" v-on:input=" optionsChangeValue">
-              <option :key="option"  v-for="option in  options.orientation">
+            <select id="orientation" v-on:input=" options.language">
+              <option :key="option" v-for="option in  options.orientation">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
-            <label for="multidate">Multidate </label>
-            <input id="multidate" type="text" placeholder="false" v-on:input=" optionsChangeValue">
+            <label for="multiDate">Multidate </label>
+            <input id="multiDate" type="text" placeholder="false" v-on:input=" optionsChangeValue">
           </li>
           <li>
-            <label for="multidate separator">Multidate separator </label>
-            <input id="multidate separator" type="text" placeholder=","
+            <label for="multiDateSeparator">Multidate separator </label>
+            <input id="multiDateSeparator" type="text" placeholder=","
                    v-on:input=" optionsChangeValue">
           </li>
         </ul>
@@ -231,13 +233,55 @@
       <!-- /.options -->
     </form>
 
-    <div class="div">
-      <input id="showCalendar" type="text" v-on:click="showCalendar = true">
-      <label for="showCalendar"></label>
+    <div class="showCalendar">
+
+
+      <div class="showTextInput" v-show="type.textInput">
+        <input class="showInput" :value="selectedDay" v-show="showInput" type="text"
+               v-on:click="showCalendar = true">
+        <Calendar :changeData="changeData" v-show="showCalendar" />
+      </div>
+      <!-- /.showTextInput -->
+
+      <div class="showComponent" v-show="type.component">
+        <input class="showInput" :value="selectedDay" v-show="showInput"  type="text"
+               v-on:click="showCalendar = true">
+        <div v-show="addCalendar" v-on:click="showCalendar = true" class="addCalendar">
+          <span title="add calendar"></span>
+        </div>
+        <!-- /.addCalendar -->
+        <Calendar :changeData="changeData" v-show="showCalendar" />
+      </div>
+      <!-- /.component -->
+
+      <div class="showEmbeddedInline" v-show="type.embeddedInline">
+        <Calendar :changeData="changeData" v-show="showCalendar" />
+      </div>
+      <!-- /.showEmbeddedInline -->
+
+      <div class="showRange" v-show="type.range">
+
+        <div class="calendar-start">
+          <input class="showInput" :value="selectedDayStart" v-show="showInput" type="text"
+                 @focus="showCalendarStart = true, showCalendarEnd = false" >
+          <Calendar :changeData="changeData" v-show="showCalendarStart" />
+        </div>
+
+        <span>to</span>
+
+        <div class="calendar-end">
+          <input class="showInput" :value="selectedDayEnd" v-show="showInput" type="text"
+                 @focus="showCalendarEnd = true, showCalendarStart = false ">
+          <Calendar class="calendar" :changeData="changeData" v-show="showCalendarEnd" />
+        </div>
+
+      </div>
+      <!-- /.showRange -->
+
+
+
     </div>
-      <Calendar v-show="showCalendar"></Calendar>
-
-
+  <!-- /.showCalendar -->
   </div>
   <!-- /.container -->
 </template>
@@ -251,12 +295,19 @@ export default {
   data() {
     return {
       type: {
-        texInput: true,
+        textInput: true,
         component: false,
         embeddedInline: false,
         range: false,
+        checked: true,
       },
+      addCalendar: false,
       showCalendar: false,
+      showCalendarStart: false,
+      selectedDayStart: '',
+      showCalendarEnd: false,
+      selectedDayEnd: '',
+      showInput: true,
       checked: true,
       options: {
         selected: true,
@@ -270,16 +321,17 @@ export default {
         todayButton: ['disabled', 'enabled (unlinked)', 'linked'],
         clearButton: '',
         orientation: ['auto', 'bottom auto', 'auto left', 'top left', 'bottom left', 'auto right', 'top right', 'bottom right',],
-        language: ['en' ,'fg' ,'ty' ,'ui' ,'qw' ,'er' ,'vbn' ,'hj' ,'hp' ,'vb' ,'kw' ,'zp' ,'vb-RT' ,'zm' ,'by' ,'mp'],
+        language: ['en', 'fg', 'ty', 'ui', 'qw', 'er', 'vbn', 'hj', 'hp', 'vb', 'kw', 'zp', 'vb-RT', 'zm', 'by', 'mp'],
         DaysOfQWeekDisabled: [],
       },
       resultDatepicker: [],
+      selectedDay: '',
 
     }
   },
   methods: {
     optionsChangeValue(event) {
-      let type =  event.target.type
+      let type = event.target.type
       let currentValue = event.target.value
       let inputId = event.currentTarget.id
       let nodeName = event.currentTarget.nodeName
@@ -289,7 +341,7 @@ export default {
       if (nodeName === "SELECT") {
         this.resultDatepicker.push(total)
 
-      } else if(nodeName === "INPUT") {
+      } else if (nodeName === "INPUT") {
 
         if (type === "checkbox") {
           let inputChecked = event.currentTarget.checked
@@ -299,68 +351,145 @@ export default {
         } else {
           this.resultDatepicker.push(total)
         }
-
       }
       console.log(this.resultDatepicker)
+    },
+    isChecked(event){
+      let typeCurrent = event.currentTarget.id
+
+      this.type.textInput = false
+      this.type.component = false
+      this.type.embeddedInline = false
+      this.type.range = false
+
+      this.type[typeCurrent] = true
+
+      if (typeCurrent === 'embeddedInline') {
+        this.showInput = false
+        this.addCalendar = false
+        this.showCalendar = true
+      } else if (typeCurrent === 'textInput') {
+        this.showInput = true
+        this.addCalendar = false
+      } else if(typeCurrent === 'component') {
+        this.showInput = true
+        this.addCalendar = true
+      } else if (typeCurrent === 'range') {
+        this.showInput = true
+      }
+    },
+    changeData(day, month, year) {
+      let date = day + '/' + (month < 10 ?  '0' : '')  + month + '/' + year
+      this.selectedDay = date
+
+      if(this.showCalendarStart) {
+        this.selectedDayStart = date
+      } else {
+        this.selectedDayEnd = date
+      }
+
+    },
+    closeCalendar() {
+      this.showCalendar = false
+      this.showCalendarStart = false
+      this.showCalendarEnd = false
     }
   },
   components: {
     Calendar
-  }
+  },
 }
 </script>
 
 <style scoped>
-ul {
-  padding: 0
-}
+  ul {
+    padding: 0
+  }
 
-ul li {
-  list-style: none;
-}
+  ul li {
+    list-style: none;
+  }
 
-label {
-  font-weight: bold;
-}
+  label {
+    font-weight: bold;
+  }
 
-.container {
-  max-width: 1170px;
-  margin: 0 auto;
-  margin-top: 30px;
-}
+  .container {
+    max-width: 1170px;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
 
-.datepicker_form {
-  padding: 25px;
-  border: solid 1px #9e9a9a;
-  background-color: #f0e7e7;
-}
+  .datepicker_form {
+    padding: 25px;
+    border: solid 1px #9e9a9a;
+    background-color: #f0e7e7;
+  }
+  .datepicker {
+    border: solid 1px red;
+  }
 
-.type ul {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
+  .type ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
 
-.type ul li {
-  margin-right: 25px;
-}
+  .type ul li {
+    margin-right: 25px;
+  }
 
-.options ul {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
+  .options ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
 
-.options ul input {
-  outline: none;
-}
+  input {
+    outline: none;
+  }
 
-.options ul li {
-  margin-right: 25px;
-}
+  .options ul li {
+    margin-right: 25px;
+  }
+
+  .showCalendar {
+    margin-top: 25px;
+    position: relative;
+    max-width: 180px;
+    display: flex;
+  }
+
+  .addCalendar {
+    background-color: #c2b5b5;
+    cursor: pointer;
+    top: 0;
+    padding: 6px 12px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    position: relative;
+  }
+  .addCalendar span {
+    text-align: center;
+    position: relative;
+  }
+  .showComponent {
+    display: flex;
+  }
+  .showEmbeddedInline {
+    position: relative;
+  }
+  .showRange {
+    display: flex;
+  }
+  .calendar-end  {
+    position: relative;
+
+    right: 0;
+  }
 
 </style>
