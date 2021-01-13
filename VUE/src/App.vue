@@ -32,118 +32,125 @@
         <ul>
           <li>
             <label for="format">Format</label>
-            <input type="text" v-model="options.format" id="format"
+            <input type="text" v-model="selectedOption.format" id="format"
            placeholder="mm/dd/yyyy">
 
           </li>
           <li>
             <label for="weekStart">Week start</label>
             <input id="weekStart" type="text" placeholder="0"
-                   v-model="options.weekStart">
+                   v-model="selectedOption.weekStart">
           </li>
           <li>
             <label for="startDate">Start date</label>
-            <input id="startDate" type="text" placeholder="-Infinity" v-model="options.startDate">
+            <input id="startDate" type="text" placeholder="-Infinity" v-model="selectedOption.startDate">
           </li>
           <li>
             <label for="endDate">End date</label>
-            <input id="endDate" type="text" placeholder="+Infinity" v-model="options.endDate">
+            <input id="endDate" type="text" placeholder="+Infinity"  v-model="selectedOption.endDate">
           </li>
           <li>
-            <label for="start">Start view</label>
-            <select id="start" v-on:input="optionsChangeValue">
-              <option :key="option" v-for="option in  options.start">
+            <label for="startView">Start view</label>
+            <select id="startView" v-model="selectedOption.startView">
+              <option :key="option" :value="index"
+                      v-for="(option, index) in options.start">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
             <label for="minMode">Min view mode</label>
-            <select id="minMode" v-on:input="optionsChangeValue">
-              <option :key="option" v-for="option in  options.minMode">
+            <select id="minMode"  v-model="selectedOption.minMode">
+              <option :key="option" :value="options.minMode[index]"
+                      v-for="(option, index) in  options.minMode">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
             <label for="maxMode">Max view mode</label>
-            <select id="maxMode" v-on:input="optionsChangeValue">
-              <option :key="option" v-for="option in  options.maxMode">
+            <select id="maxMode"  v-model="selectedOption.maxMode">
+              <option :key="option" :value="options.maxMode[index]"
+                      v-for="(option, index) in  options.maxMode">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
             <label for="todayButton">Today button</label>
-            <select id="todayButton" v-on:input="optionsChangeValue">
-              <option :key="option" v-for="option in  options.todayButton">
+            <select id="todayButton" v-model="selectedOption.todayButton">
+              <option :key="option" :value="options.todayButton[index]"
+                      v-for="(option, index) in options.todayButton">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
             <label for="clearButton">Clear button</label>
-            <select id="clearButton" v-on:input="optionsChangeValue">
+            <select id="clearButton" v-model="selectedOption.clearButton">
               <option value="false">disabled</option>
               <option value="true">enabled</option>
             </select>
           </li>
           <li>
             <label for="language">Language</label>
-            <select id="language" v-on:input="optionsChangeValue">
-              <option :key="option" v-for="option in options.language">
+            <select id="language" v-model="selectedOption.language">
+              <option :key="option" :value="options.language[index]"
+                      v-for="(option, index) in options.language">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
             <label for="orientation">Orientation</label>
-            <select id="orientation" v-on:input=" options.language">
-              <option :key="option" v-for="option in  options.orientation">
+            <select id="orientation" v-model="selectedOption.orientation">
+              <option :key="option" :value="options.orientation[index]"
+                      v-for="(option, index) in  options.orientation">
                 {{ option }}
               </option>
             </select>
           </li>
           <li>
             <label for="multiDate">Multidate </label>
-            <input id="multiDate" type="text" placeholder="false" v-on:input=" optionsChangeValue">
+            <input id="multiDate" type="text" placeholder="false"
+                   v-model="selectedOption.multiDate">
           </li>
           <li>
             <label for="multiDateSeparator">Multidate separator </label>
             <input id="multiDateSeparator" type="text" placeholder=","
-                   v-on:input=" optionsChangeValue">
+                   v-model="selectedOption.multiDateSeparator">
           </li>
         </ul>
         <div class="days_disabled">
           <p>Days of week disabled:</p>
           <ul>
             <li>
-              <input type="checkbox" id="disabled0" v-on:input=" optionsChangeValue">
-              <label for="disabled0">0</label>
+              <input type="checkbox" id="0" value="0" v-model="selectedOption.daysOfQWeekDisabled">
+              <label for="0">0</label>
             </li>
             <li>
-              <input type="checkbox" id="disabled1" v-on:input=" optionsChangeValue">
-              <label for="disabled1">1</label>
+              <input type="checkbox" id="1" value="1" v-model="selectedOption.daysOfQWeekDisabled">
+              <label for="1">1</label>
             </li>
             <li>
-              <input type="checkbox" id="disabled2" v-on:input=" optionsChangeValue">
-              <label for="disabled2">2</label>
+              <input type="checkbox" id="2" value="2" v-model="selectedOption.daysOfQWeekDisabled">
+              <label for="2">2</label>
             </li>
             <li>
-              <input type="checkbox" id="disabled13" v-on:input=" optionsChangeValue">
-              <label for="disabled13">3</label>
+              <input type="checkbox" id="3" value="3" v-model="selectedOption.daysOfQWeekDisabled">
+              <label for="3">3</label>
             </li>
             <li>
-              <input type="checkbox" id="disabled14" v-on:input=" optionsChangeValue">
-              <label for="disabled14">4</label>
+              <input type="checkbox" id="4" value="4" v-model="selectedOption.daysOfQWeekDisabled">
+              <label for="4">4</label>
             </li>
             <li>
-              <input type="checkbox" id="disabled15" v-on:input=" optionsChangeValue">
-              <label for="disabled15">5</label>
+              <input type="checkbox" id="5" value="5" v-model="selectedOption.daysOfQWeekDisabled">
+              <label for="5">5</label>
             </li>
             <li>
-              <input type="checkbox" id="disabled16" v-on:input=" optionsChangeValue">
-              <label for="disabled16">6</label>
+              <input type="checkbox" id="6" value="6" v-model="selectedOption.daysOfQWeekDisabled">
+              <label for="6">6</label>
             </li>
           </ul>
         </div>
@@ -152,129 +159,128 @@
           <p>Days of week highlighted:</p>
           <ul>
             <li>
-              <input type="checkbox" id="allocated0" v-on:input=" optionsChangeValue">
-              <label for="allocated0">0</label>
+              <input type="checkbox" id="allocated-0" value="0" v-model="selectedOption.daysOfWeekHighlighted">
+              <label for="allocated-0">0</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated1" v-on:input=" optionsChangeValue">
-              <label for="allocated1">1</label>
+              <input type="checkbox" id="allocated-1" value="1" v-model="selectedOption.daysOfWeekHighlighted">
+              <label for="allocated-1">1</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated2" v-on:input=" optionsChangeValue">
-              <label for="allocated2">2</label>
+              <input type="checkbox" id="allocated-2" value="2" v-model="selectedOption.daysOfWeekHighlighted">
+              <label for="allocated-2">2</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated3" v-on:input=" optionsChangeValue">
-              <label for="allocated3">3</label>
+              <input type="checkbox" id="allocated-3" value="3" v-model="selectedOption.daysOfWeekHighlighted">
+              <label for="allocated-3">3</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated4" v-on:input=" optionsChangeValue">
-              <label for="allocated4">4</label>
+              <input type="checkbox" id="allocated-4" value="4" v-model="selectedOption.daysOfWeekHighlighted">
+              <label for="allocated-4">4</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated5" v-on:input=" optionsChangeValue">
-              <label for="allocated5">5</label>
+              <input type="checkbox" id="allocated-5" value="5" v-model="selectedOption.daysOfWeekHighlighted">
+              <label for="allocated-5">5</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated6" v-on:input=" optionsChangeValue">
-              <label for="allocated6">6</label>
+              <input type="checkbox" id="allocated-6" value="6" v-model="selectedOption.daysOfWeekHighlighted">
+              <label for="allocated-6">6</label>
             </li>
           </ul>
         </div>
         <!-- /.days_allocated -->
         <ul>
           <li>
-            <input type="checkbox" id="Calendar weeks" v-on:input="optionsChangeValue">
-            <label for="Calendar weeks" v-on:input="optionsChangeValue">Calendar weeks</label>
+            <input type="checkbox" id="calendarWeeks" v-model="selectedOption.calendarWeeks">
+            <label for="calendarWeeks">Calendar weeks</label>
           </li>
           <li>
-            <input type="checkbox" id="AutoСlose" v-on:input=" optionsChangeValue">
-            <label for="AutoСlose">Auto Close</label>
+            <input type="checkbox" id="closeAuto" v-model="selectedOption.closeAuto">
+            <label for="closeAuto">Auto Close</label>
           </li>
           <li>
-            <input type="checkbox" id="Today_highlight" v-on:input=" optionsChangeValue">
-            <label for="Today_highlight">Today highlight</label>
+            <input type="checkbox" id="todayHighlight" v-model="selectedOption.todayHighlight">
+            <label for="todayHighlight">Today highlight</label>
           </li>
           <li>
-            <input :checked="checked" type="checkbox" id="Keyboard_navigation"
-                   v-on:input=" optionsChangeValue">
-            <label for="Keyboard_navigation">Keyboard navigation</label>
+            <input :checked="checked" type="checkbox" id="keyboardNavigation"
+                   v-model="selectedOption.keyboardNavigation">
+            <label for="keyboardNavigation">Keyboard navigation</label>
           </li>
           <li>
-            <input :checked="checked" type="checkbox" id="Force_parse">
-            <label for="Force_parse">Force parse</label>
+            <input :checked="checked" type="checkbox" id="forceParse"
+                   v-model="selectedOption.forceParse">
+            <label for="forceParse">Force parse</label>
           </li>
           <li>
-            <input type="checkbox" id="day_callback" v-on:input=" optionsChangeValue">
-            <label for="day_callback">Before-show-day callback</label>
+            <input type="checkbox" id="dayCallback" v-model="selectedOption.dayCallback">
+            <label for="dayCallback">Before-show-day callback</label>
           </li>
           <li>
-            <input type="checkbox" id="month_callback" v-on:input=" optionsChangeValue">
-            <label for="month_callback">Before-show-month callback</label>
+            <input type="checkbox" id="monthCallback" v-model="selectedOption.monthCallback">
+            <label for="monthCallback">Before-show-month callback</label>
           </li>
           <li>
-            <input type="checkbox" id="year_callbac" v-on:input=" optionsChangeValue">
-            <label for="year_callbac">Before-show-year callback</label>
+            <input type="checkbox" id="yearCallback" v-model="selectedOption.yearCallback">
+            <label for="yearCallback">Before-show-year callback</label>
           </li>
           <li>
-            <input type="checkbox" id="datesDisabled" v-on:input=" optionsChangeValue">
+            <input type="checkbox" id="datesDisabled" v-model="selectedOption.datesDisabled">
             <label for="datesDisabled">datesDisabled</label>
           </li>
           <li>
-            <input type="checkbox" id="Toggle_Active" v-on:input=" optionsChangeValue">
-            <label for="Toggle_Active">Toggle Active</label>
+            <input type="checkbox" id="toggleActive" v-model="selectedOption.toggleActive">
+            <label for="toggleActive">Toggle Active</label>
           </li>
           <li>
-            <input type="checkbox" id=" DefaultViewDate_option" v-on:input=" optionsChangeValue">
-            <label for=" DefaultViewDate_option"> DefaultViewDate option</label>
+            <input type="checkbox" id=" defaultViewDate" v-model="selectedOption.defaultViewDate">
+            <label for=" defaultViewDate"> DefaultViewDate option</label>
           </li>
         </ul>
       </div>
       <!-- /.options -->
     </form>
-
     <div class="showCalendar">
 
-
-      <div class="showTextInput" v-show="type.textInput">
+      <div class="showTextInput" v-if="type.textInput">
         <input class="showInput" :value="selectedDay" v-show="showInput" type="text"
                v-on:click="showCalendar = true">
-        <Calendar :changeData="changeData" v-show="showCalendar" />
+        <Calendar :language="selectedOption.language" :todayHighlight="selectedOption.todayHighlight"
+                  :changeData="changeData" v-show="showCalendar" />
       </div>
       <!-- /.showTextInput -->
 
-      <div class="showComponent" v-show="type.component">
+      <div class="showComponent" v-if="type.component">
         <input class="showInput" :value="selectedDay" v-show="showInput"  type="text"
                v-on:click="showCalendar = true">
         <div v-show="addCalendar" v-on:click="showCalendar = true" class="addCalendar">
           <span title="add calendar"></span>
         </div>
         <!-- /.addCalendar -->
-        <Calendar :changeData="changeData" v-show="showCalendar" />
+        <Calendar :todayHighlight="selectedOption.todayHighlight" :changeData="changeData" v-show="showCalendar" />
       </div>
       <!-- /.component -->
 
-      <div class="showEmbeddedInline" v-show="type.embeddedInline">
-        <Calendar :changeData="changeData" v-show="showCalendar" />
+      <div class="showEmbeddedInline" v-if="type.embeddedInline">
+        <div class="E-Line">
+          <Calendar :todayHighlight="selectedOption.todayHighlight" style="top: 0" :changeData="changeData"/>
+        </div>
+        <!-- /.showCalendar -->
       </div>
       <!-- /.showEmbeddedInline -->
 
-      <div class="showRange" v-show="type.range">
-
+      <div class="showRange" v-if="type.range">
         <div class="calendar-start">
           <input class="showInput" :value="selectedDayStart" v-show="showInput" type="text"
                  @focus="showCalendarStart = true, showCalendarEnd = false" >
-          <Calendar :changeData="changeData" v-show="showCalendarStart" />
+          <Calendar :language="selectedOption.language" :todayHighlight="selectedOption.todayHighlight" :changeData="changeData" v-show="showCalendarStart" />
         </div>
-
         <span>to</span>
-
         <div class="calendar-end">
           <input class="showInput" :value="selectedDayEnd" v-show="showInput" type="text"
                  @focus="showCalendarEnd = true, showCalendarStart = false ">
-          <Calendar class="calendar" :changeData="changeData" v-show="showCalendarEnd" />
+          <Calendar :language="selectedOption.language" :todayHighlight="selectedOption.todayHighlight" class="calendar" :changeData="changeData" v-show="showCalendarEnd" />
         </div>
-
       </div>
       <!-- /.showRange -->
 
@@ -282,6 +288,7 @@
 
     </div>
   <!-- /.showCalendar -->
+
   </div>
   <!-- /.container -->
 </template>
@@ -311,49 +318,47 @@ export default {
       checked: true,
       options: {
         selected: true,
-        format: '',
-        weekStart: '',
-        startDate: '',
-        endDate: '',
         start: ['0 / days', '1 / months', '2 / years', '3 / decades', '4 / centuries',],
         minMode: [' 0 / days', '1 / months', '2 / years', '3 / decades', '4 / centuries',],
         maxMode: [' 0 / days', ' 1 / months', '2 / years', '3 / decades', '4 / centuries'],
         todayButton: ['disabled', 'enabled (unlinked)', 'linked'],
-        clearButton: '',
         orientation: ['auto', 'bottom auto', 'auto left', 'top left', 'bottom left', 'auto right', 'top right', 'bottom right',],
-        language: ['en', 'fg', 'ty', 'ui', 'qw', 'er', 'vbn', 'hj', 'hp', 'vb', 'kw', 'zp', 'vb-RT', 'zm', 'by', 'mp'],
-        DaysOfQWeekDisabled: [],
+        language: ['en', 'fr', 'ro', 'ua', 'de',],
       },
-      resultDatepicker: [],
+      selectedOption: {
+        format: '',
+        weekStart: '',
+        startDate: '',
+        endDate: '',
+        startView: '',
+        minMode: '',
+        maxMode: '',
+        todayButton: '',
+        clearButton: '',
+        language: '',
+        orientation: '',
+        multiDate: '',
+        multiDateSeparator: '',
+        daysOfQWeekDisabled: [],
+        daysOfWeekHighlighted: [],
+        calendarWeeks: false,
+        closeAuto: false,
+        todayHighlight: false,
+        keyboardNavigation: true,
+        forceParse: true,
+        dayCallback: false,
+        monthCallback: false,
+        yearCallback: false,
+        datesDisabled: false,
+        toggleActive: false,
+        defaultViewDate: false,
+      },
       selectedDay: '',
+      resultDatepicker: [],
 
     }
   },
   methods: {
-    optionsChangeValue(event) {
-      let type = event.target.type
-      let currentValue = event.target.value
-      let inputId = event.currentTarget.id
-      let nodeName = event.currentTarget.nodeName
-
-      let total = inputId + ': ' + currentValue
-
-      if (nodeName === "SELECT") {
-        this.resultDatepicker.push(total)
-
-      } else if (nodeName === "INPUT") {
-
-        if (type === "checkbox") {
-          let inputChecked = event.currentTarget.checked
-          let total = inputId + ': ' + inputChecked
-
-          this.resultDatepicker.push(total)
-        } else {
-          this.resultDatepicker.push(total)
-        }
-      }
-      console.log(this.resultDatepicker)
-    },
     isChecked(event){
       let typeCurrent = event.currentTarget.id
 
@@ -425,9 +430,6 @@ export default {
     border: solid 1px #9e9a9a;
     background-color: #f0e7e7;
   }
-  .datepicker {
-    border: solid 1px red;
-  }
 
   .type ul {
     display: -webkit-box;
@@ -488,8 +490,11 @@ export default {
   }
   .calendar-end  {
     position: relative;
-
     right: 0;
+  }
+  .E-Line {
+    position: relative;
+    bottom: 0;
   }
 
 </style>
