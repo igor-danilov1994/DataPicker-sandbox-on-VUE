@@ -8,7 +8,7 @@
         </td>
 
         <td colspan="5">
-         {{ selectLanguageMonths() /*(months[this.month])*/ }} {{ year }}
+         {{ selectLanguageMonths() }} {{ year }}
         </td>
 
         <td>
@@ -17,16 +17,16 @@
       </tr>
 
       <tr>
-        <td :key="d" v-for="d in selectLanguageDay() ">
+        <td :key="d" v-for="d in selectLanguageDay()">
           {{ d }}
         </td>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="week in calendar()">
-
-        <td class="calendar_day" v-on:click="changeData( day.index, (month + 1), year )" v-for="day in week"
-            :style="{'color': day.weekend, 'background-color': todayHighlight ? day.current : '' }">
+      <tr v-for="(week, index) in calendar()" >
+        <td v-on:click="changeData( day.index, (month + 1), year, index )"
+            v-for="(day, index) in week"
+            :style="{'color': day.weekend, 'background-color': todayHighlight ? day.current : ''}">
           {{ day.index }}
         </td>
 
@@ -39,12 +39,13 @@
 <script>
 export default {
   name: 'Calendar',
-  props: ['changeData', 'todayHighlight', 'language'],
+  props: ['changeData', 'todayHighlight', 'language', 'dayHighlighted', 'dayDisabled'],
   data() {
     return {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       dFirstMonth: '1',
+      isDisabled: true,
       day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       languageMonths: {
@@ -54,7 +55,6 @@ export default {
         ro: ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'],
         ua: ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липня', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'],
         de: ['Januar', 'Februar', 'März', 'April', 'Kann', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-
       },
       languageDay: {
         en: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
@@ -69,9 +69,9 @@ export default {
   },
   methods: {
     calendar() {
-      var days = [];
-      var week = 0;
-      days[week] = [];
+      let days = []
+      let week = 0
+      days[week] = []
       var dayLast = new Date(this.year, this.month + 1, 0).getDate();
       for (let i = 1; i <= dayLast; i++) {
         if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
@@ -91,6 +91,7 @@ export default {
           days[week].push(a);
           if ((i === new Date().getDate()) && (this.year === new Date().getFullYear()) && (this.month === new Date().getMonth())) {
             a.current = '#747ae6'
+
           }
           if (new Date(this.year, this.month, i).getDay() === 6 || new Date(this.year, this.month, i).getDay() === 0) {
             a.weekend = '#ff0000'
@@ -170,7 +171,7 @@ export default {
         default:
           return this.languageDay.en
       }
-    }
+    },
   },
   computed: {
     dayChange() {
@@ -182,12 +183,6 @@ export default {
     },
 
   },
-
-
-
-
-
-
 }
 </script>
 
@@ -214,6 +209,9 @@ export default {
   .table td {
     text-align: center;
   }
+  tbody td {
+    cursor: pointer;
+  }
 
   .calendar {
     position: absolute;
@@ -224,12 +222,14 @@ export default {
     border-radius: 5px;
     padding: 10px;
     height: 145px;
+    box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.5);
   }
   .calendar_day:hover {
     color: #ffffff;
     background-color: cornflowerblue;
     cursor: pointer;
   }
+
   button {
     cursor: pointer;
     border: none;

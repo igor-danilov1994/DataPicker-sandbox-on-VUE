@@ -240,13 +240,17 @@
       </div>
       <!-- /.options -->
     </form>
+
     <div class="showCalendar">
 
       <div class="showTextInput" v-if="type.textInput">
         <input class="showInput" :value="selectedDay" v-show="showInput" type="text"
                v-on:click="showCalendar = true">
-        <Calendar :language="selectedOption.language" :todayHighlight="selectedOption.todayHighlight"
-                  :changeData="changeData" v-show="showCalendar" />
+        <Calendar :language="selectedOption.language"
+                  :todayHighlight="selectedOption.todayHighlight"
+                  :changeData="changeData" v-show="showCalendar"
+                  :dayDisabled="selectedOption.daysOfQWeekDisabled"
+                  :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
       </div>
       <!-- /.showTextInput -->
 
@@ -257,13 +261,18 @@
           <span title="add calendar"></span>
         </div>
         <!-- /.addCalendar -->
-        <Calendar :todayHighlight="selectedOption.todayHighlight" :changeData="changeData" v-show="showCalendar" />
+        <Calendar :todayHighlight="selectedOption.todayHighlight"
+                  :changeData="changeData" v-show="showCalendar"
+                  :dayDisabled="selectedOption.daysOfQWeekDisabled"
+                  :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
       </div>
       <!-- /.component -->
 
       <div class="showEmbeddedInline" v-if="type.embeddedInline">
         <div class="E-Line">
-          <Calendar :todayHighlight="selectedOption.todayHighlight" style="top: 0" :changeData="changeData"/>
+          <Calendar :todayHighlight="selectedOption.todayHighlight" style="top: 0" :changeData="changeData"
+                    :dayDisabled="selectedOption.daysOfQWeekDisabled"
+                    :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
         </div>
         <!-- /.showCalendar -->
       </div>
@@ -273,13 +282,21 @@
         <div class="calendar-start">
           <input class="showInput" :value="selectedDayStart" v-show="showInput" type="text"
                  @focus="showCalendarStart = true, showCalendarEnd = false" >
-          <Calendar :language="selectedOption.language" :todayHighlight="selectedOption.todayHighlight" :changeData="changeData" v-show="showCalendarStart" />
+          <Calendar :language="selectedOption.language"
+                    :todayHighlight="selectedOption.todayHighlight"
+                    :changeData="changeData" v-show="showCalendarStart"
+                    :dayDisabled="selectedOption.daysOfQWeekDisabled"
+                    :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
         </div>
         <span>to</span>
         <div class="calendar-end">
           <input class="showInput" :value="selectedDayEnd" v-show="showInput" type="text"
                  @focus="showCalendarEnd = true, showCalendarStart = false ">
-          <Calendar :language="selectedOption.language" :todayHighlight="selectedOption.todayHighlight" class="calendar" :changeData="changeData" v-show="showCalendarEnd" />
+          <Calendar :language="selectedOption.language"
+                    :todayHighlight="selectedOption.todayHighlight" class="calendar"
+                    :changeData="changeData" v-show="showCalendarEnd"
+                    :dayDisabled="selectedOption.daysOfQWeekDisabled"
+                    :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
         </div>
       </div>
       <!-- /.showRange -->
@@ -316,6 +333,7 @@ export default {
       selectedDayEnd: '',
       showInput: true,
       checked: true,
+      isDisabled: true,
       options: {
         selected: true,
         start: ['0 / days', '1 / months', '2 / years', '3 / decades', '4 / centuries',],
@@ -323,7 +341,7 @@ export default {
         maxMode: [' 0 / days', ' 1 / months', '2 / years', '3 / decades', '4 / centuries'],
         todayButton: ['disabled', 'enabled (unlinked)', 'linked'],
         orientation: ['auto', 'bottom auto', 'auto left', 'top left', 'bottom left', 'auto right', 'top right', 'bottom right',],
-        language: ['en', 'fr', 'ro', 'ua', 'de',],
+        language: ['en', 'fr', 'ro', 'ua', 'de', 'ru'],
       },
       selectedOption: {
         format: '',
@@ -354,8 +372,6 @@ export default {
         defaultViewDate: false,
       },
       selectedDay: '',
-      resultDatepicker: [],
-
     }
   },
   methods: {
@@ -383,17 +399,38 @@ export default {
         this.showInput = true
       }
     },
-    changeData(day, month, year) {
-      let date = day + '/' + (month < 10 ?  '0' : '')  + month + '/' + year
-      this.selectedDay = date
+    changeData(day, month, year, week) {
+      let date = day + '/' + (month < 10 ? '0' : '') + month + '/' + year
 
-      if(this.showCalendarStart) {
-        this.selectedDayStart = date
-      } else {
-        this.selectedDayEnd = date
+      let arr = this.selectedOption.daysOfWeekHighlighted
+      let arr2 = this.selectedOption.daysOfQWeekDisabled
+
+      this.setDay(week, arr, arr2)
+
+      if (this.isDisabled) {
+        this.selectedDay = date
+        if (this.showCalendarStart) {
+          this.selectedDayStart = date
+        } else {
+          this.selectedDayEnd = date
+        }
       }
 
     },
+
+    setDay(week, arr, arr2) {
+      let a = this.isDisabled
+
+        arr2.forEach(function(item, i) {
+            let num = Number(item)
+            if (num === week){
+              a = false
+            } else if(num !== week || !a) {
+              a = true
+            }})
+      this.isDisabled = a
+    },
+
     closeCalendar() {
       this.showCalendar = false
       this.showCalendarStart = false
