@@ -1,12 +1,12 @@
 <template>
   <div ref="datepicker" id="datepicker" class="container datepicker">
-    <form class="datepicker_form" action="#"  @click="closeCalendar">
+    <form class="datepicker_form" action="#" @click="closeCalendar">
       <div class="type">
         <span>Type:</span>
         <ul>
           <li>
             <input v-on:click="isChecked" :checked="type.textInput"
-                    id="textInput" type="radio">
+                   id="textInput" type="radio">
             <label for="textInput">Text input</label>
           </li>
           <li>
@@ -34,7 +34,7 @@
           <li>
             <label for="format">Format</label>
             <input type="text" v-model="selectedOption.format" id="format"
-           placeholder="mm/dd/yyyy">
+                   placeholder="mm/dd/yyyy">
 
           </li>
           <li>
@@ -48,7 +48,7 @@
           </li>
           <li>
             <label for="endDate">End date</label>
-            <input id="endDate" type="text" placeholder="+Infinity"  v-model="selectedOption.endDate">
+            <input id="endDate" type="text" placeholder="+Infinity" v-model="selectedOption.endDate">
           </li>
           <li>
             <label for="startView">Start view</label>
@@ -61,7 +61,7 @@
           </li>
           <li>
             <label for="minMode">Min view mode</label>
-            <select id="minMode"  v-model="selectedOption.minMode">
+            <select id="minMode" v-model="selectedOption.minMode">
               <option :key="option" :value="options.minMode[index]"
                       v-for="(option, index) in  options.minMode">
                 {{ option }}
@@ -70,7 +70,7 @@
           </li>
           <li>
             <label for="maxMode">Max view mode</label>
-            <select id="maxMode"  v-model="selectedOption.maxMode">
+            <select id="maxMode" v-model="selectedOption.maxMode">
               <option :key="option" :value="options.maxMode[index]"
                       v-for="(option, index) in  options.maxMode">
                 {{ option }}
@@ -95,8 +95,11 @@
           </li>
           <li>
             <label for="language">Language</label>
-            <select id="language" v-model="selectedOption.language">
-              <option :key="option" :value="options.language[index]"
+            <select id="language"
+                    v-model="selectedOption.language">
+              <option :key="option"
+                      :value="options.language[index]"
+                      :selected="index[0]"
                       v-for="(option, index) in options.language">
                 {{ option }}
               </option>
@@ -105,7 +108,8 @@
           <li>
             <label for="orientation">Orientation</label>
             <select id="orientation" v-model="selectedOption.orientation">
-              <option :key="option" :value="options.orientation[index]"
+              <option :key="option"
+                      :value="options.orientation[index]"
                       v-for="(option, index) in  options.orientation">
                 {{ option }}
               </option>
@@ -249,65 +253,41 @@
       <!-- /.options -->
     </form>
 
-    <div v-if="showTextInput">
+    <div class="showComponent" v-if="showTextInput">
       <TextInput
         v-show="type.textInput"
-        :changeData="changeData"
-        :daysOfWeekHighlighted="selectedOption.daysOfWeekHighlighted"
-        :daysOfQWeekDisabled="selectedOption.daysOfQWeekDisabled"
-        :todayHighlight="selectedOption.todayHighlight"
-        :selectedDays="selectedDays"
-        :showCalendar="showCalendar"
-        :toggleSetInputToCalendar="toggleSetInputToCalendar"
-        :language="selectedOption.language"
+        :propsToCalendar="propsToCalendar"
+        :propsToComponent="propsToComponent"
       />
     </div>
 
-      <div v-if="showComponent">
-        <Componente
-          v-show="type.component"
-          :changeData="changeData"
-          :daysOfWeekHighlighted="selectedOption.daysOfWeekHighlighted"
-          :daysOfQWeekDisabled="selectedOption.daysOfQWeekDisabled"
-          :todayHighlight="selectedOption.todayHighlight"
-          :selectedDays="selectedDays"
-          :showCalendar="showCalendar"
-          :toggleSetInputToCalendar="toggleSetInputToCalendar"
-          :language="selectedOption.language"
-        />
-      </div>
+    <div class="showComponent" v-if="showComponent">
+      <Componente
+        v-show="type.component"
+        :propsToCalendar="propsToCalendar"
+        :propsToComponent="propsToComponent"
+      />
+    </div>
 
-      <div class="showEmbeddedInline" v-if="showEmbeddedInline">
-        <Embedded v-show="type.embeddedInline"
-                  :changeData="changeData"
-                  :daysOfWeekHighlighted="selectedOption.daysOfWeekHighlighted"
-                  :daysOfQWeekDisabled="selectedOption.daysOfQWeekDisabled"
-                  :todayHighlight="selectedOption.todayHighlight"
-                  :selectedDays="selectedDays"
-                  :language="selectedOption.language"
-        />
-      </div>
+    <div class="showComponent" v-if="showEmbeddedInline">
+      <Embedded v-show="type.embeddedInline"
+                :propsToCalendar="propsToCalendar"
+      />
+    </div>
 
-         <div v-if="showRange" >
-           <Ranges v-show="type.range"
-                   :changeData="changeData"
-                   :daysOfWeekHighlighted="selectedOption.daysOfWeekHighlighted"
-                   :daysOfQWeekDisabled="selectedOption.daysOfQWeekDisabled"
-                   :todayHighlight="selectedOption.todayHighlight"
-                   :selectedDayStart="selectedDayStart"
-                   :selectedDayEnd="selectedDayEnd"
-                   :showCalendarStart="showCalendarStart"
-                   :showCalendarEnd="showCalendarEnd"
-                   :toggleSetInputToCalendar="toggleSetInputToCalendar"
-                   :language="selectedOption.language"
-           />
-         </div>
-         <!-- /.showRange -->
-
-<!-- /.showCalendar -->
-
+    <div class="showComponent" v-if="showRange">
+      <Ranges v-show="type.range"
+              :selectedDayStart="selectedDayStart"
+              :selectedDayEnd="selectedDayEnd"
+              :showCalendarStart="showCalendarStart"
+              :showCalendarEnd="showCalendarEnd"
+              :propsToCalendar="propsToCalendar"
+              :toggleSetInputToCalendar="toggleSetInputToCalendar"
+      />
+    </div>
+    <!-- /.showRange -->
   </div>
-  <!-- /.container -->
+  <!-- /.container datepicker  -->
 </template>
 
 <script>
@@ -329,7 +309,6 @@ export default {
         range: false,
         checked: true,
       },
-      addCalendar: false,
       showTextInput: true,
       showEmbeddedInline: false,
       showComponent: false,
@@ -382,14 +361,14 @@ export default {
     }
   },
   methods: {
-    isChecked(event){
+    isChecked(event) {
       let typeCurrent = event.currentTarget.id
 
       this.type.textInput = false
       this.type.component = false
       this.type.embeddedInline = false
       this.type.range = false
-      this.showCalendar= false
+      this.showCalendar = false
 
       this.type[typeCurrent] = true
 
@@ -399,7 +378,7 @@ export default {
       } else if (typeCurrent === 'textInput') {
         this.showCalendar = true
         this.showTextInput = true
-      } else if(typeCurrent === 'component') {
+      } else if (typeCurrent === 'component') {
         this.showCalendar = true
         this.showComponent = true
       } else if (typeCurrent === 'range') {
@@ -410,7 +389,7 @@ export default {
       let date = day + '/' + (month < 10 ? '0' : '') + month + '/' + year
       let dayDisabled = this.selectedOption.daysOfQWeekDisabled
 
-      if (dayDisabled.length > 0){
+      if (dayDisabled.length > 0) {
         this.setDayDisabled(index, dayDisabled)
       }
 
@@ -422,16 +401,20 @@ export default {
           this.selectedDayEnd = date
         }
       }
+      if (this.selectedOption.closeAuto) {
+        this.closeCalendar()
+      }
     },
     setDayDisabled(index, dayDisabled) {
       let a = this.isDisabled
-      dayDisabled.forEach(function(item, i) {
-          let num = Number(item)
-          if (num === index){
-            a = false
-          } else if(num !== index || !a) {
-            a = true
-          }})
+      dayDisabled.forEach(function (item, i) {
+        let num = Number(item)
+        if (num === index) {
+          a = false
+        } else if (num !== index || !a) {
+          a = true
+        }
+      })
       this.isDisabled = a
     },
     closeCalendar() {
@@ -439,12 +422,12 @@ export default {
       this.showCalendarStart = false
       this.showCalendarEnd = false
     },
-    toggleSetInputToCalendar(openStart, openEnd){
-      if (openStart){
+    toggleSetInputToCalendar(openStart, openEnd) {
+      if (openStart) {
         this.showCalendarStart = true
         this.showCalendar = true
         this.showCalendarEnd = false
-      } else if(openEnd) {
+      } else if (openEnd) {
         this.showCalendarStart = false
         this.showCalendarEnd = true
       }
@@ -457,96 +440,94 @@ export default {
     Embedded,
     Ranges,
   },
+  computed: {
+    propsToCalendar: function () {
+      return {
+        changeData: this.changeData,
+        todayHighlight: this.selectedOption.todayHighlight,
+        daysOfQWeekDisabled: this.selectedOption.daysOfQWeekDisabled,
+        daysOfWeekHighlighted: this.selectedOption.daysOfWeekHighlighted,
+        language: this.selectedOption.language,
+      }
+    },
+    propsToComponent: function () {
+      return {
+        toggleSetInputToCalendar: this.toggleSetInputToCalendar,
+        selectedDays: this.selectedDays,
+        showCalendar: this.showCalendar,
+      }
+    },
+  }
 }
 </script>
 
-<style scoped>
-  ul {
-    padding: 0
-  }
+<style>
+ul {
+  padding: 0
+}
 
-  ul li {
-    list-style: none;
-  }
+ul li {
+  list-style: none;
+}
 
-  label {
-    font-weight: bold;
-  }
+label {
+  font-weight: bold;
+}
 
-  .container {
-    max-width: 1170px;
-    margin: 0 auto;
-    margin-top: 30px;
-  }
+.container {
+  max-width: 1170px;
+  margin: 0 auto;
+  margin-top: 30px;
+}
 
-  .datepicker_form {
-    padding: 25px;
-    border: solid 1px #9e9a9a;
-    background-color: #f0e7e7;
-  }
+.datepicker_form {
+  padding: 25px;
+  border: solid 1px #9e9a9a;
+  background-color: #f0e7e7;
+}
 
-  .type ul {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-  }
+.type ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
 
-  .type ul li {
-    margin-right: 25px;
-  }
+.type ul li {
+  margin-right: 25px;
+}
 
-  .options ul {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-  }
+.options ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
 
-  input {
-    outline: none;
-  }
+input, select {
+  outline: none;
+  border-radius: 3px;
+  border: solid 1px #ccc;
+}
 
-  .options ul li {
-    margin-right: 25px;
-  }
+.options ul li {
+  margin-right: 25px;
+  margin-top: 8px;
+}
 
-  .showCalendar {
-    margin-top: 25px;
-    position: relative;
-    max-width: 180px;
-    display: flex;
-  }
+.showComponent {
+  margin-top: 15px;
+}
 
-  .addCalendar {
-    background-color: #c2b5b5;
-    cursor: pointer;
-    top: 0;
-    padding: 6px 12px;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
-    position: relative;
-  }
-  .addCalendar span {
-    text-align: center;
-    position: relative;
-  }
-  .showComponent {
-    display: flex;
-  }
+.days_disabled {
+  display: flex;
+  align-items: center;
+}
 
-  .showRange {
-    display: flex;
-  }
-  .calendar-end  {
-    position: relative;
-    right: 0;
-  }
-  .E-Line {
-    position: relative;
-    bottom: 0;
-  }
-
+.days_allocated {
+  display: flex;
+  align-items: center;
+}
 </style>

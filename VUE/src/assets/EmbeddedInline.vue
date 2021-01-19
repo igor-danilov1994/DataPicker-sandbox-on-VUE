@@ -1,11 +1,6 @@
 <template>
   <div class="showEmbedded" >
-      <Calendar style="top: 0"
-                :changeData="changeData"
-                :daysOfWeekHighlighted="daysOfWeekHighlighted"
-                :daysOfQWeekDisabled="daysOfQWeekDisabled"
-                :todayHighlight="todayHighlight"
-                :language="language"
+      <Calendar style="top: 0" :propsToCalendar="propsToCalendar"
       />
   </div>
   <!-- /.component -->
@@ -19,8 +14,7 @@ import Calendar from '../Calendar';
 
 export default {
   name: 'Embedded',
-  props: ['changeData', 'language', 'todayHighlight', 'daysOfQWeekDisabled',
-    'daysOfWeekHighlighted'],
+  props: ['propsToCalendar'],
   data() {
     return {
     }

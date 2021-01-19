@@ -23,11 +23,11 @@
       </thead>
       <tbody>
       <tr v-for="(week, index) in calendar()">
-        <td v-on:click="changeData( day.index, (month + 1), year, index)"
+        <td v-on:click="propsToCalendar.changeData( day.index, (month + 1), year, index)"
             v-for="(day, index) in week"
-            :style="{'color': day.weekend, 'background-color': todayHighlight ? day.current : ''}"
-            :class="[daysOfWeekHighlighted.includes( index.toString() ) ? 'selectedDays' : '',
-                    daysOfQWeekDisabled.includes( index.toString() ) ? 'disabledDays' : '', ]">
+            :style="{'color': day.weekend, 'background-color': propsToCalendar.todayHighlight ? day.current : ''}"
+            :class="[propsToCalendar.daysOfWeekHighlighted.includes( index.toString() ) ? 'selectedDays' : '',
+                    propsToCalendar.daysOfQWeekDisabled.includes( index.toString() ) ? 'disabledDays' : '', ]">
           {{ day.index }}
         </td>
       </tr>
@@ -39,7 +39,7 @@
 <script>
 export default {
   name: 'Calendar',
-  props: ['changeData', 'todayHighlight', 'daysOfQWeekDisabled', 'daysOfWeekHighlighted', 'language'],
+  props: ['propsToCalendar'],
   data() {
     return {
       month: new Date().getMonth(),
@@ -125,7 +125,7 @@ export default {
       }
     },
     selectLanguageMonths() {
-      switch (this.language) {
+      switch (this.propsToCalendar.language) {
         case 'ru': {
             return this.languageMonths.ru[this.month]
         }
@@ -149,7 +149,7 @@ export default {
       }
     },
     selectLanguageDay() {
-      switch (this.language) {
+      switch (this.propsToCalendar.language) {
         case 'ru': {
           return this.languageDay.ru
         }
