@@ -15,7 +15,6 @@
           <button v-on:click="increase"> ></button>
         </td>
       </tr>
-
       <tr>
         <td :key="d" v-for="d in selectLanguageDay()">
           {{ d }}
@@ -23,13 +22,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(week, index) in calendar()" >
-        <td v-on:click="changeData( day.index, (month + 1), year, index )"
+      <tr v-for="(week, index) in calendar()">
+        <td v-on:click="changeData( day.index, (month + 1), year, index)"
             v-for="(day, index) in week"
-            :style="{'color': day.weekend, 'background-color': todayHighlight ? day.current : ''}">
+            :style="{'color': day.weekend, 'background-color': todayHighlight ? day.current : ''}"
+            :class="[daysOfWeekHighlighted.includes( index.toString() ) ? 'selectedDays' : '',
+                    daysOfQWeekDisabled.includes( index.toString() ) ? 'disabledDays' : '', ]">
           {{ day.index }}
         </td>
-
       </tr>
       </tbody>
     </table>
@@ -39,13 +39,12 @@
 <script>
 export default {
   name: 'Calendar',
-  props: ['changeData', 'todayHighlight', 'language', 'dayHighlighted', 'dayDisabled'],
+  props: ['changeData', 'todayHighlight', 'daysOfQWeekDisabled', 'daysOfWeekHighlighted', 'language'],
   data() {
     return {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       dFirstMonth: '1',
-      isDisabled: true,
       day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       languageMonths: {
@@ -72,8 +71,10 @@ export default {
       let days = []
       let week = 0
       days[week] = []
-      var dayLast = new Date(this.year, this.month + 1, 0).getDate();
+      let dayLast = new Date(this.year, this.month + 1, 0).getDate()
+
       for (let i = 1; i <= dayLast; i++) {
+
         if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
           let a = {index: i};
           days[week].push(a);
@@ -83,15 +84,15 @@ export default {
           if (new Date(this.year, this.month, i).getDay() === 6 || new Date(this.year, this.month, i).getDay() === 0) {
             a.weekend = '#ff0000'
           }
-        } else {
-          week++;
 
-          days[week] = [];
-          let a = {index: i};
-          days[week].push(a);
+        } else {
+          week++
+          days[week] = []
+          let a = {index: i}
+          days[week].push(a)
+
           if ((i === new Date().getDate()) && (this.year === new Date().getFullYear()) && (this.month === new Date().getMonth())) {
             a.current = '#747ae6'
-
           }
           if (new Date(this.year, this.month, i).getDay() === 6 || new Date(this.year, this.month, i).getDay() === 0) {
             a.weekend = '#ff0000'
@@ -102,7 +103,6 @@ export default {
       if (days[0].length > 0) {
         for (let i = days[0].length; i < 7; i++) {
           days[0].unshift('')
-
         }
       }
       this.dayChange
@@ -181,7 +181,6 @@ export default {
         this.day = ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"]
       }
     },
-
   },
 }
 </script>
@@ -233,6 +232,13 @@ export default {
   button {
     cursor: pointer;
     border: none;
+  }
+  .selectedDays {
+    background-color: gray;
+  }
+  .disabledDays {
+    cursor: default;
+    opacity: 0.5;
   }
 
 

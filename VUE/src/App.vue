@@ -10,7 +10,8 @@
             <label for="textInput">Text input</label>
           </li>
           <li>
-            <input id="component" type="radio" :checked="type.component" v-on:click="isChecked">
+            <input id="component" type="radio" :checked="type.component"
+                   v-on:click="isChecked">
             <label for="component">Component</label>
           </li>
           <li>
@@ -159,31 +160,38 @@
           <p>Days of week highlighted:</p>
           <ul>
             <li>
-              <input type="checkbox" id="allocated-0" value="0" v-model="selectedOption.daysOfWeekHighlighted">
+              <input type="checkbox" id="allocated-0" value="0"
+                     v-model="selectedOption.daysOfWeekHighlighted">
               <label for="allocated-0">0</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated-1" value="1" v-model="selectedOption.daysOfWeekHighlighted">
+              <input type="checkbox" id="allocated-1" value="1"
+                     v-model="selectedOption.daysOfWeekHighlighted">
               <label for="allocated-1">1</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated-2" value="2" v-model="selectedOption.daysOfWeekHighlighted">
+              <input type="checkbox" id="allocated-2" value="2"
+                     v-model="selectedOption.daysOfWeekHighlighted">
               <label for="allocated-2">2</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated-3" value="3" v-model="selectedOption.daysOfWeekHighlighted">
+              <input type="checkbox" id="allocated-3" value="3"
+                     v-model="selectedOption.daysOfWeekHighlighted">
               <label for="allocated-3">3</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated-4" value="4" v-model="selectedOption.daysOfWeekHighlighted">
+              <input type="checkbox" id="allocated-4" value="4"
+                     v-model="selectedOption.daysOfWeekHighlighted">
               <label for="allocated-4">4</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated-5" value="5" v-model="selectedOption.daysOfWeekHighlighted">
+              <input type="checkbox" id="allocated-5" value="5"
+                     v-model="selectedOption.daysOfWeekHighlighted">
               <label for="allocated-5">5</label>
             </li>
             <li>
-              <input type="checkbox" id="allocated-6" value="6" v-model="selectedOption.daysOfWeekHighlighted">
+              <input type="checkbox" id="allocated-6" value="6"
+                     v-model="selectedOption.daysOfWeekHighlighted">
               <label for="allocated-6">6</label>
             </li>
           </ul>
@@ -241,70 +249,62 @@
       <!-- /.options -->
     </form>
 
-    <div class="showCalendar">
-
-      <div class="showTextInput" v-if="type.textInput">
-        <input class="showInput" :value="selectedDay" v-show="showInput" type="text"
-               v-on:click="showCalendar = true">
-        <Calendar :language="selectedOption.language"
-                  :todayHighlight="selectedOption.todayHighlight"
-                  :changeData="changeData" v-show="showCalendar"
-                  :dayDisabled="selectedOption.daysOfQWeekDisabled"
-                  :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
-      </div>
-      <!-- /.showTextInput -->
-
-      <div class="showComponent" v-if="type.component">
-        <input class="showInput" :value="selectedDay" v-show="showInput"  type="text"
-               v-on:click="showCalendar = true">
-        <div v-show="addCalendar" v-on:click="showCalendar = true" class="addCalendar">
-          <span title="add calendar"></span>
-        </div>
-        <!-- /.addCalendar -->
-        <Calendar :todayHighlight="selectedOption.todayHighlight"
-                  :changeData="changeData" v-show="showCalendar"
-                  :dayDisabled="selectedOption.daysOfQWeekDisabled"
-                  :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
-      </div>
-      <!-- /.component -->
-
-      <div class="showEmbeddedInline" v-if="type.embeddedInline">
-        <div class="E-Line">
-          <Calendar :todayHighlight="selectedOption.todayHighlight" style="top: 0" :changeData="changeData"
-                    :dayDisabled="selectedOption.daysOfQWeekDisabled"
-                    :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
-        </div>
-        <!-- /.showCalendar -->
-      </div>
-      <!-- /.showEmbeddedInline -->
-
-      <div class="showRange" v-if="type.range">
-        <div class="calendar-start">
-          <input class="showInput" :value="selectedDayStart" v-show="showInput" type="text"
-                 @focus="showCalendarStart = true, showCalendarEnd = false" >
-          <Calendar :language="selectedOption.language"
-                    :todayHighlight="selectedOption.todayHighlight"
-                    :changeData="changeData" v-show="showCalendarStart"
-                    :dayDisabled="selectedOption.daysOfQWeekDisabled"
-                    :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
-        </div>
-        <span>to</span>
-        <div class="calendar-end">
-          <input class="showInput" :value="selectedDayEnd" v-show="showInput" type="text"
-                 @focus="showCalendarEnd = true, showCalendarStart = false ">
-          <Calendar :language="selectedOption.language"
-                    :todayHighlight="selectedOption.todayHighlight" class="calendar"
-                    :changeData="changeData" v-show="showCalendarEnd"
-                    :dayDisabled="selectedOption.daysOfQWeekDisabled"
-                    :dayHighlighted="selectedOption.daysOfWeekHighlighted"/>
-        </div>
-      </div>
-      <!-- /.showRange -->
-
-
-
+    <div v-if="showTextInput">
+      <TextInput
+        v-show="type.textInput"
+        :changeData="changeData"
+        :daysOfWeekHighlighted="selectedOption.daysOfWeekHighlighted"
+        :daysOfQWeekDisabled="selectedOption.daysOfQWeekDisabled"
+        :todayHighlight="selectedOption.todayHighlight"
+        :selectedDays="selectedDays"
+        :showCalendar="showCalendar"
+        :toggleSetInputToCalendar="toggleSetInputToCalendar"
+        :language="selectedOption.language"
+      />
     </div>
-  <!-- /.showCalendar -->
+
+      <div v-if="showComponent">
+        <Componente
+          v-show="type.component"
+          :changeData="changeData"
+          :daysOfWeekHighlighted="selectedOption.daysOfWeekHighlighted"
+          :daysOfQWeekDisabled="selectedOption.daysOfQWeekDisabled"
+          :todayHighlight="selectedOption.todayHighlight"
+          :selectedDays="selectedDays"
+          :showCalendar="showCalendar"
+          :toggleSetInputToCalendar="toggleSetInputToCalendar"
+          :language="selectedOption.language"
+        />
+      </div>
+
+      <div class="showEmbeddedInline" v-if="showEmbeddedInline">
+        <Embedded v-show="type.embeddedInline"
+                  :changeData="changeData"
+                  :daysOfWeekHighlighted="selectedOption.daysOfWeekHighlighted"
+                  :daysOfQWeekDisabled="selectedOption.daysOfQWeekDisabled"
+                  :todayHighlight="selectedOption.todayHighlight"
+                  :selectedDays="selectedDays"
+                  :language="selectedOption.language"
+        />
+      </div>
+
+         <div v-if="showRange" >
+           <Ranges v-show="type.range"
+                   :changeData="changeData"
+                   :daysOfWeekHighlighted="selectedOption.daysOfWeekHighlighted"
+                   :daysOfQWeekDisabled="selectedOption.daysOfQWeekDisabled"
+                   :todayHighlight="selectedOption.todayHighlight"
+                   :selectedDayStart="selectedDayStart"
+                   :selectedDayEnd="selectedDayEnd"
+                   :showCalendarStart="showCalendarStart"
+                   :showCalendarEnd="showCalendarEnd"
+                   :toggleSetInputToCalendar="toggleSetInputToCalendar"
+                   :language="selectedOption.language"
+           />
+         </div>
+         <!-- /.showRange -->
+
+<!-- /.showCalendar -->
 
   </div>
   <!-- /.container -->
@@ -312,7 +312,11 @@
 
 <script>
 
-import Calendar from './Calendar.vue';
+import Calendar from './Calendar.vue'
+import TextInput from './assets/TextInput'
+import Componente from './assets/Component'
+import Embedded from './assets/EmbeddedInline'
+import Ranges from './assets/Ranges'
 
 export default {
   name: 'app',
@@ -326,12 +330,16 @@ export default {
         checked: true,
       },
       addCalendar: false,
+      showTextInput: true,
+      showEmbeddedInline: false,
+      showComponent: false,
+      showRange: false,
       showCalendar: false,
       showCalendarStart: false,
-      selectedDayStart: '',
       showCalendarEnd: false,
+      selectedDayStart: '',
       selectedDayEnd: '',
-      showInput: true,
+      selectedDays: '',
       checked: true,
       isDisabled: true,
       options: {
@@ -371,7 +379,6 @@ export default {
         toggleActive: false,
         defaultViewDate: false,
       },
-      selectedDay: '',
     }
   },
   methods: {
@@ -382,63 +389,73 @@ export default {
       this.type.component = false
       this.type.embeddedInline = false
       this.type.range = false
+      this.showCalendar= false
 
       this.type[typeCurrent] = true
 
       if (typeCurrent === 'embeddedInline') {
-        this.showInput = false
-        this.addCalendar = false
+        this.showEmbeddedInline = true
         this.showCalendar = true
       } else if (typeCurrent === 'textInput') {
-        this.showInput = true
-        this.addCalendar = false
+        this.showCalendar = true
+        this.showTextInput = true
       } else if(typeCurrent === 'component') {
-        this.showInput = true
-        this.addCalendar = true
+        this.showCalendar = true
+        this.showComponent = true
       } else if (typeCurrent === 'range') {
-        this.showInput = true
+        this.showRange = true
       }
     },
-    changeData(day, month, year, week) {
+    changeData(day, month, year, index,) {
       let date = day + '/' + (month < 10 ? '0' : '') + month + '/' + year
+      let dayDisabled = this.selectedOption.daysOfQWeekDisabled
 
-      let arr = this.selectedOption.daysOfWeekHighlighted
-      let arr2 = this.selectedOption.daysOfQWeekDisabled
+      if (dayDisabled.length > 0){
+        this.setDayDisabled(index, dayDisabled)
+      }
 
-      this.setDay(week, arr, arr2)
-
-      if (this.isDisabled) {
-        this.selectedDay = date
+      if (this.isDisabled && day) {
+        this.selectedDays = date
         if (this.showCalendarStart) {
           this.selectedDayStart = date
-        } else {
+        } else if (this.showCalendarEnd) {
           this.selectedDayEnd = date
         }
       }
-
     },
-
-    setDay(week, arr, arr2) {
+    setDayDisabled(index, dayDisabled) {
       let a = this.isDisabled
-
-        arr2.forEach(function(item, i) {
-            let num = Number(item)
-            if (num === week){
-              a = false
-            } else if(num !== week || !a) {
-              a = true
-            }})
+      dayDisabled.forEach(function(item, i) {
+          let num = Number(item)
+          if (num === index){
+            a = false
+          } else if(num !== index || !a) {
+            a = true
+          }})
       this.isDisabled = a
     },
-
     closeCalendar() {
       this.showCalendar = false
       this.showCalendarStart = false
       this.showCalendarEnd = false
+    },
+    toggleSetInputToCalendar(openStart, openEnd){
+      if (openStart){
+        this.showCalendarStart = true
+        this.showCalendar = true
+        this.showCalendarEnd = false
+      } else if(openEnd) {
+        this.showCalendarStart = false
+        this.showCalendarEnd = true
+      }
     }
   },
   components: {
-    Calendar
+    Calendar,
+    TextInput,
+    Componente,
+    Embedded,
+    Ranges,
   },
 }
 </script>
@@ -519,9 +536,7 @@ export default {
   .showComponent {
     display: flex;
   }
-  .showEmbeddedInline {
-    position: relative;
-  }
+
   .showRange {
     display: flex;
   }
